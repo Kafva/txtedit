@@ -1,0 +1,16 @@
+**/bin/**
+**/obj/**
+dist
+build
+*.o
+*.swp
+*.pid
+*~
+~$*
+*.core
+*.orig
+*.rej
+.tags
+.localized
+.DS_Store
+_DS_Store
