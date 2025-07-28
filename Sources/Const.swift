@@ -9,9 +9,6 @@ enum Const {
     static let editorTitleFont = Font.system(size: 22.0, design: .serif)
         .italic().bold()
 
-    static let screenWidth = UIScreen.main.bounds.size.width
-    static let screenHeight = UIScreen.main.bounds.size.height
-
     static let allowedContentTypes: [UTType] = [
         .plainText,
         .text,

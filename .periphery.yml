@@ -1,0 +1,5 @@
+project: txtedit.xcodeproj
+schemes:
+- txtedit
+targets:
+- txtedit
