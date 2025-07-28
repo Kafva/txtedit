@@ -11,7 +11,15 @@ struct StartView: View {
 
     var body: some View {
         VStack(alignment: .center, spacing: 30) {
-            Button(action: { newFileIsPresented = true }) {
+            if let latestFile {
+                Button(action: { appState.currentUrl = latestFile }) {
+                    Label("Continue…", systemImage: "document.badge.clock.fill")
+                        .font(.title2)
+                }
+            }
+            Button(action: {
+                newFileIsPresented = true
+            }) {
                 Label("New…", systemImage: "document.badge.plus")
                     .font(.title2)
             }
@@ -23,10 +31,10 @@ struct StartView: View {
                 .autocapitalization(.none)
                 .autocorrectionDisabled()
                 .onSubmit {
-                        handleSubmit()
+                        handleNewFileSubmit()
                 }
                 Button("Continue") {
-                        handleSubmit()
+                        handleNewFileSubmit()
                 }
                 Button("Cancel", role: .cancel) {
                     newFileIsPresented = false
@@ -47,30 +55,33 @@ struct StartView: View {
         .padding([.leading, .trailing], 25)
     }
 
-    private func handleSubmit() {
+    private func handleNewFileSubmit() {
         let newUrl = FileManager.default.appDataDirectory.appending(path: newFile)
+        latestFile = newUrl
         appState.currentUrl = newUrl
         newFileIsPresented = false
+        appState.editDisabled = false
     }
 
     private func handleImport(result: Result<[URL], any Error>) {
         switch result {
-        case .success(let files):
-            files.forEach { f in
-                if !f.startAccessingSecurityScopedResource() {
-                    appState.currentError = "Could not gain access to: '\(f.path())'"
+        case .success(let urls):
+            urls.forEach { url in
+                if !url.startAccessingSecurityScopedResource() {
+                    appState.currentError = "Could not gain access to: '\(url.path())'"
                     return
                 }
 
                 do {
-                    appState.editorContent = try String(contentsOf: f, encoding: .utf8)
-                    appState.currentUrl = f
+                    appState.editorContent = try String(contentsOf: url, encoding: .utf8)
+                    latestFile = url
+                    appState.currentUrl = url
                 }
                 catch {
-                    appState.currentError = 
+                    appState.currentError =
                         "Error reading content: \(error.localizedDescription)"
                 }
-                f.stopAccessingSecurityScopedResource()
+                url.stopAccessingSecurityScopedResource()
             }
         case .failure(let error):
             appState.currentError = error.localizedDescription

@@ -6,12 +6,11 @@ struct EditorView: View {
 
     @State private var fileImporterIsPresented = false;
     @State private var newFileIsPresented = false;
-    @State private var editDisabled = true;
 
     var body: some View {
         VStack(alignment: .center) {
             topBarView
-            contentView.disabled(editDisabled)
+            contentView.disabled(appState.editDisabled)
         }
     }
 
@@ -22,7 +21,7 @@ struct EditorView: View {
             }
 
             if let currentUrl = appState.currentUrl {
-                Text("\(currentUrl.lastPathComponent)")
+                Text(currentUrl.lastPathComponent)
                     .font(.title2)
                     .underline()
             }
@@ -30,14 +29,14 @@ struct EditorView: View {
             Spacer()
 
             Group {
-                if editDisabled {
-                    Button(action: { editDisabled = false }) {
+                if appState.editDisabled {
+                    Button(action: { appState.editDisabled = false }) {
                         Label("Edit", systemImage: "pencil.line")
                     }
                 }
                 else {
                     Button(action: handleSave) {
-                        Text(":w").font(Const.saveButtonFont).foregroundColor(.green)
+                        Text(":w").font(Const.saveButtonFont)
                     }
                 }
             }
@@ -66,31 +65,15 @@ struct EditorView: View {
                 appState.currentError = "Could not gain access to: '\(currentUrl.path())'"
                 return
             }
-            try appState.editorContent.write(to: currentUrl, atomically: true, encoding: .utf8)
-            editDisabled = true
+            try appState.editorContent.write(
+                to: currentUrl,
+                atomically: true,
+                encoding: .utf8
+            )
+            appState.editDisabled = true
         } catch {
             appState.currentError = "Error saving file: \(error.localizedDescription)"
         }
         currentUrl.stopAccessingSecurityScopedResource()
     }
 }
-
-// private struct BlockerView: View {
-//     let active: Bool
-//     var body: some View {
-//         VStack {
-//             if active {
-//                 Spacer()
-//                 Rectangle()
-//                     .frame(width: Const.screenWidth, height: Const.screenHeight)
-//                     .opacity(0.1)
-//                     .onTapGesture {
-//                         // There needs to be a onTapGesture registered for taps
-//                         // to be properly blocked.
-//                         Const.logger.debug("Tab selection tap gesture ignored")
-//                     }
-//             }
-//         }
-//     }
-// }
-
