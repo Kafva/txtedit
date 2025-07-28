@@ -1,8 +1,6 @@
 import SwiftUI
 import UIKit
 
-// Save most recent file in @AppStorage, open this by default
-// Open from filepicker
 struct AppView: View {
 #if targetEnvironment(simulator)
     @State private var currentFile: URL? = URL(string: "/etc/passwd");
@@ -59,6 +57,7 @@ NOTE that Trunk ports support traffic INSIDE the VLAN, i.e. the "source" and "de
     @State private var currentFile: URL? = nil;
     @State private var textContent: String = "";
 #endif
+    @State private var editEnabled: Bool = false;
     @State private var currentError: String? = nil;
 
     let editorFont = Font.system(size: 17.0, design: .monospaced)
@@ -84,8 +83,17 @@ NOTE that Trunk ports support traffic INSIDE the VLAN, i.e. the "source" and "de
                     .padding(.leading, 20)
                 Spacer()
 
-                Button(action: handleSave) {
-                    Text(":w").font(saveButtonFont)
+                Group {
+                    if editEnabled {
+                        Button(action: handleSave) {
+                            Text(":w").font(saveButtonFont).foregroundColor(.green)
+                        }
+                    }
+                    else {
+                        Button(action: { editEnabled = true }) {
+                            Text(":e").font(saveButtonFont)
+                        }
+                    }
                 }
                 .padding(.trailing, 20)
             }
@@ -130,7 +138,7 @@ NOTE that Trunk ports support traffic INSIDE the VLAN, i.e. the "source" and "de
                 )
             }
         }
-        .frame(width: screenWidth * 0.85, height: screenHeight * 0.85)
+        .padding([.leading, .trailing], 25)
     }
 
     private func handleSave() {
@@ -143,6 +151,7 @@ NOTE that Trunk ports support traffic INSIDE the VLAN, i.e. the "source" and "de
                 return
             }
             try textContent.write(to: currentFile, atomically: true, encoding: .utf8)
+            editEnabled = false
         } catch {
             currentError = "Error saving file: \(error.localizedDescription)"
         }
