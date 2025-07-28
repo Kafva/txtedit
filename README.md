@@ -6,4 +6,4 @@ The year is 2025 and we cannot edit text files on iOS, i love it here
 
 This is a very basic text edit app for iOS.
 
-Imagine being able to open local files with a text editor 🤯.
+Imagine being able to open local files with a text editor 🤯
