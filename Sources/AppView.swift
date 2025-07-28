@@ -59,6 +59,8 @@ NOTE that Trunk ports support traffic INSIDE the VLAN, i.e. the "source" and "de
     @State private var currentFile: URL? = nil;
     @State private var textContent: String = "";
 #endif
+    @State private var currentError: String? = nil;
+
     let editorFont = Font.system(size: 17.0, design: .monospaced)
     let screenWidth = UIScreen.main.bounds.size.width
     let screenHeight = UIScreen.main.bounds.size.height
@@ -67,7 +69,22 @@ NOTE that Trunk ports support traffic INSIDE the VLAN, i.e. the "source" and "de
 
     var body: some View {
         VStack(alignment: .center) {
-            if currentFile != nil {
+            if currentError != nil {
+                VStack {
+                    Text("An error has occured")
+                        .bold()
+                        .font(.title2)
+                        .padding(.bottom, 10)
+                        .padding(.top, 10)
+                    Text(currentError ?? "No description available")
+                        .font(.body)
+                        .foregroundColor(.red)
+                }.onTapGesture {
+                    currentFile = nil;
+                    currentError = nil;
+                }
+            }
+            else if currentFile != nil {
                 TextEditor(text: $textContent)
                     .multilineTextAlignment(.leading)
                     .font(editorFont)
@@ -92,24 +109,23 @@ NOTE that Trunk ports support traffic INSIDE the VLAN, i.e. the "source" and "de
     func handleImport(result: Result<[URL], any Error>) {
         switch result {
         case .success(let files):
-            files.forEach { file in
-                // gain access to the directory
-                let gotAccess = file.startAccessingSecurityScopedResource()
-                if !gotAccess { return }
+            files.forEach { f in
+                if !f.startAccessingSecurityScopedResource() {
+                    currentError = "Could not gain access to: '\(f.path())'"
+                    return
+                }
 
                 do {
-                    textContent = try String(contentsOf: file, encoding: .utf8)
-                    currentFile = file
+                    textContent = try String(contentsOf: f, encoding: .utf8)
+                    currentFile = f
                 }
                 catch {
-                    print("\(error.localizedDescription)")
+                    currentError = "Error reading content: \(error.localizedDescription)"
                 }
-
-                // release access
-                file.stopAccessingSecurityScopedResource()
+                f.stopAccessingSecurityScopedResource()
             }
         case .failure(let error):
-            print(error)
+            currentError = error.localizedDescription
         }
     }
 }

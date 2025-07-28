@@ -8,15 +8,15 @@
 
 /* Begin PBXBuildFile section */
 		2988D6A21DC7B10026496498 /* app.swift in Sources */ = {isa = PBXBuildFile; fileRef = F81991C462598F33654ED205 /* app.swift */; };
+		80775C3B383FF5A5855E0696 /* AppView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81CBBB7EBB3F994DAF884A05 /* AppView.swift */; };
 		DDCF5C372E375ACF00592FA6 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DDCF5C362E375ACF00592FA6 /* Assets.xcassets */; };
-		DDCF5C3C2E375AE800592FA6 /* FileEditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDCF5C382E375AE800592FA6 /* FileEditorView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		81CBBB7EBB3F994DAF884A05 /* AppView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AppView.swift; sourceTree = "<group>"; };
 		DDC6F8C62E3761E000549F7E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		DDCB891F2E3759D80077C8E4 /* todo-md.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "todo-md.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		DDCF5C362E375ACF00592FA6 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		DDCF5C382E375AE800592FA6 /* FileEditorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileEditorView.swift; sourceTree = "<group>"; };
 		F81991C462598F33654ED205 /* app.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = app.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -52,8 +52,8 @@
 			isa = PBXGroup;
 			children = (
 				DDC6F8C62E3761E000549F7E /* Info.plist */,
-				DDCF5C382E375AE800592FA6 /* FileEditorView.swift */,
 				F81991C462598F33654ED205 /* app.swift */,
+				81CBBB7EBB3F994DAF884A05 /* AppView.swift */,
 			);
 			path = Sources;
 			sourceTree = "<group>";
@@ -129,8 +129,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				DDCF5C3C2E375AE800592FA6 /* FileEditorView.swift in Sources */,
 				2988D6A21DC7B10026496498 /* app.swift in Sources */,
+				80775C3B383FF5A5855E0696 /* AppView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
