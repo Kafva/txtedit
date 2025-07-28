@@ -3,7 +3,7 @@ import UIKit
 import UniformTypeIdentifiers
 
 enum Const {
-    static let editorFont = Font.system(size: 17.0, design: .monospaced)
+    static let editorFont = Font.system(size: 14.0, design: .monospaced)
     static let saveButtonFont = Font.system(size: 20.0, design: .monospaced)
 
     static let screenWidth = UIScreen.main.bounds.size.width
@@ -18,9 +18,6 @@ enum Const {
         .log,
         .json,
         .yaml,
-        .html,
-        .css,
-        .shellScript,
-        .pythonScript,
+        .playlist,
     ]
 }

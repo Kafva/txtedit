@@ -7,13 +7,21 @@ struct EditorView: View {
     var body: some View {
         VStack(alignment: .center) {
             topHeader.padding(.top, 20)
-            TextEditor(text: $appState.editorContent)
-                .multilineTextAlignment(.leading)
-                .font(Const.editorFont)
-                .autocorrectionDisabled()
-                .autocapitalization(.none)
-                .padding([.leading, .trailing], 25)
-                .disabled(appState.editDisabled)
+            Group {
+                if appState.editDisabled {
+                    ScrollView {
+                        Text(appState.editorContent)
+                    }
+                }
+                else {
+                    TextEditor(text: $appState.editorContent)
+                }
+            }
+            .multilineTextAlignment(.leading)
+            .font(Const.editorFont)
+            .autocorrectionDisabled()
+            .autocapitalization(.none)
+            .padding([.leading, .trailing], 5)
         }
     }
 
@@ -28,7 +36,6 @@ struct EditorView: View {
 
             if let currentUrl = appState.currentUrl {
                 Text(currentUrl.lastPathComponent)
-                    .underline()
                     .padding([.leading, .trailing], 8)
                     .lineLimit(1)
                     .font(.title)
@@ -57,11 +64,7 @@ struct EditorView: View {
             return
         }
         do {
-            if !currentUrl.startAccessingSecurityScopedResource() {
-                appState.currentError =
-                    "Could not gain access to: '\(currentUrl.path())'"
-                return
-            }
+            _ = currentUrl.startAccessingSecurityScopedResource()
             try appState.editorContent.write(
                 to: currentUrl,
                 atomically: true,

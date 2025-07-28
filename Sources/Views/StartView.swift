@@ -12,11 +12,13 @@ struct StartView: View {
     var body: some View {
         VStack(alignment: .center, spacing: 30) {
             if let latestAppFile {
-                ButtonView(
-                    action: { handleImport(url: latestAppFile) },
-                    text: "Continue…  (\(latestAppFile.lastPathComponent))",
-                    systemImage: "document.badge.clock"
-                )
+                if FileManager.default.access(latestAppFile) {
+                    ButtonView(
+                        action: { handleImport(url: latestAppFile) },
+                        text: "Continue…  (\(latestAppFile.lastPathComponent))",
+                        systemImage: "document.badge.clock"
+                    )
+                }
             }
 
             ButtonView(
@@ -34,7 +36,16 @@ struct StartView: View {
                         guard let url = urls.first else {
                             return
                         }
+
+                        if !url.startAccessingSecurityScopedResource() {
+                            appState.currentError = "Could not gain access to: '\(url.path())'"
+                            return
+                        }
+
                         handleImport(url: url)
+
+                        url.stopAccessingSecurityScopedResource()
+
                     case .failure(let error):
                         appState.currentError = error.localizedDescription
                     }
@@ -84,15 +95,12 @@ struct StartView: View {
     }
 
     private func handleImport(url: URL) {
-        if !url.startAccessingSecurityScopedResource() {
-            appState.currentError = "Could not gain access to: '\(url.path())'"
-            return
-        }
-
         do {
-            appState.editorContent = try String(
-                contentsOf: url, encoding: .utf8)
+            appState.editorContent = try String(contentsOf: url, encoding: .utf8)
             appState.currentUrl = url
+            // Open existing files read-only
+            appState.editDisabled = true
+
             // Do not update the `latestAppFile`, we get a security exception
             // if we try to access it again later, this API looks like what we
             // need, (macOS only)
@@ -105,7 +113,6 @@ struct StartView: View {
             appState.currentError =
                 "Error reading content: \(error.localizedDescription)"
         }
-        url.stopAccessingSecurityScopedResource()
     }
 }
 
