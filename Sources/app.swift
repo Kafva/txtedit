@@ -1,10 +1,10 @@
 import SwiftUI
 
 @main
-struct todo_mdApp: App {
+struct TodoMdApp: App {
     var body: some Scene {
         WindowGroup {
-            FileEditorView()
+            AppView()
         }
     }
 }

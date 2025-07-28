@@ -1,109 +1,115 @@
 import SwiftUI
-import UniformTypeIdentifiers
+import UIKit
 
-struct FileEditorView: View {
-    @State private var textContent: String = ""
-    @State private var isImporting: Bool = false
-    @State private var isSaving: Bool = false
-    @State private var selectedFileUrl: URL? = nil
-    @State private var saveStatusMessage: String = ""
-    @State private var saveStatusColor: Color = .gray
-    @State private var showAlert: Bool = false
-    @State private var alertTitle: String = ""
-    @State private var alertMessage: String = ""
+// Save most recent file in @AppStorage, open this by default
+// Open from filepicker
+struct AppView: View {
+#if targetEnvironment(simulator)
+    @State private var currentFile: URL? = URL(string: "/");
+    @State private var textContent: String = """
+VLAN ⟅ 2.6 ⟆
+
+To reduce the size of broadcast domains several VLANs can be created when the number of ports
+on the Layer 3 routers aren't enough to segment the LAN.
+Each host within a VLAN group acts as if they were directly connected to a bus leading into the switch.
+A VLAN group creates its own broadcast domain and Layer 3 routing is required to communicate with any
+and all hosts outside of the VLAN. The VLAN therefore requires a network address and a hierarchical
+addressing scheme. 
+
+---Benefits 
+• Security, segmentation of devices into subnets based on services decreases the number of vulnerabilities.
+• Cost reductions in upscaling compared to purchasing physical devices.
+• Better performance (Fewer broadcast domains), layer 2 traffic becomes less crowded when
+multiple logical nets are used.
+• Users with similar needs can share the same network configuration 
+which makes for a more efficient workflow.
+
+---VLAN types 'show vlan [ brief | id [...] | name [...] | summary ]'
+* Data VLAN, also referred to as user VLAN, supports data traffic and separates the net into groups of end-devices/users. 
+(voice and management information needs to be transferred over a different VLAN).
+
+* Default VLAN, on boot up all the ports on a switch are put into the VLAN 1 group and therefore the switch
+acts accordingly with all ports being on the same logical net. All Layer 2 traffic on unconfigured switches
+therefore effectively pass through VLAN 1. The default VLAN can't be renamed or deleted.
+
+* Native VLAN, Access ports only support traffic tagged for a certain VLAN. 802.1Q Trunk ports support the
+transmission of VLAN traffic with several different tags specified for the trunk and all other untagged traffic 
+(lacking the 4-byte tag inserted into the Ethernet frame header) will be transferred over trunk ports using the
+Native VLAN. By default set to VLAN 1 but should according to Cisco best practises be assigned to a separate VLAN.
+'switchport trunk native [...]'. If you want communication on the Native VLAN then it does have to be added to the
+allowed list, there might be reasons to avoid this however. 
+
+* Management VLAN, used for all switch management traffic (VLAN 1 by default), effectively the SVI is given
+its own IP address in the form of the management VLAN. 
+
+* Voice VLAN, a VoIP VLAN needs to support traffic priority and rerouting around congestion, the
+entire network needs to be structured in a way so that a VoIP VLAN can be created.
+
+•• Trunk Ports ••
+Point-to-Point links that connect intermediary devices with one or more associated VLANs.
+The VLAN trunks are integral to expanding the VLAN with several intermediary links so that 
+frames can be propagated in accordance with the desired broadcast domains. Trunks don't belong to a set VLAN
+but act as conduits for all in/out going traffic between different VLANs from switches as well as routers.
+The trunk ports need to be configured so that they can support traffic between all the available VLAN subnets,
+
+NOTE that Trunk ports support traffic INSIDE the VLAN, i.e. the "source" and "destination" VLAN will always be equal!
+
+""";
+#else
+    @State private var currentFile: URL? = nil;
+    @State private var textContent: String = "";
+#endif
+    let editorFont = Font.system(size: 17.0, design: .monospaced)
+    let screenWidth = UIScreen.main.bounds.size.width
+    let screenHeight = UIScreen.main.bounds.size.height
+
+    @State private var fileImporterIsPresented = false;
 
     var body: some View {
-        VStack {
-            TextEditor(text: $textContent)
-                .border(Color.gray, width: 1)
-                .padding()
-
-            HStack {
-                Button("Open File") {
-                    isImporting = true
-                }
-                .buttonStyle(.borderedProminent)
-                .fileImporter(
-                    isPresented: $isImporting,
-                    allowedContentTypes: [.plainText, .text],
-                    allowsMultipleSelection: false
-                ) { result in
-                    switch result {
-                    case .success(let files):
-                        files.forEach { file in
-                            // gain access to the directory
-                            let gotAccess = file.startAccessingSecurityScopedResource()
-                            if !gotAccess { return }
-
-                            do {
-                                // access the directory URL
-                                // (read templates in the directory, make a bookmark, etc.)
-                                textContent = try String(contentsOf: file, encoding: .utf8)
-                            }
-                            catch {
-                                print("\(error.localizedDescription)")
-                            }
-
-                            // release access
-                            file.stopAccessingSecurityScopedResource()
-                        }
-                    case .failure(let error):
-                        print(error)
-                    }
-                }
-
-                Button("Save File") {
-                    isSaving = true
-                    saveFile()
-                }
-                .buttonStyle(.borderedProminent)
-                .disabled(selectedFileUrl == nil)
+        VStack(alignment: .center) {
+            if currentFile != nil {
+                TextEditor(text: $textContent)
+                    .multilineTextAlignment(.leading)
+                    .font(editorFont)
+                    .autocorrectionDisabled()
+                    .autocapitalization(.none)
+                    .frame(width: screenWidth * 0.85, height: screenHeight * 0.85)
             }
-            .padding()
-
-            Text(saveStatusMessage)
-                .foregroundColor(saveStatusColor)
-                .padding(.bottom)
-
-            Spacer()
-
-        }
-        .alert(isPresented: $showAlert) {
-            Alert(title: Text(alertTitle), message: Text(alertMessage), dismissButton: .default(Text("OK")))
+            else {
+                Button(action: { fileImporterIsPresented = true }) {
+                    Label("Open…", systemImage: "document.viewfinder")
+                }
+                .fileImporter(
+                    isPresented: $fileImporterIsPresented,
+                    allowedContentTypes: [.plainText, .text],
+                    allowsMultipleSelection: false,
+                    onCompletion: handleImport,
+                )
+            }
         }
     }
 
-    private func saveFile() {
-        guard let fileURL = selectedFileUrl else {
-            alertTitle = "No File Selected"
-            alertMessage = "Please open a file before saving."
-            showAlert = true
-            return
-        }
+    func handleImport(result: Result<[URL], any Error>) {
+        switch result {
+        case .success(let files):
+            files.forEach { file in
+                // gain access to the directory
+                let gotAccess = file.startAccessingSecurityScopedResource()
+                if !gotAccess { return }
 
-        do {
-            try textContent.write(to: fileURL, atomically: true, encoding: .utf8)
-            saveStatusMessage = "File saved successfully!"
-            saveStatusColor = .green
-        } catch {
-            saveStatusMessage = "Error saving file: \(error.localizedDescription)"
-            saveStatusColor = .red
-            alertTitle = "Error Saving File"
-            alertMessage = "Could not save the file: \(error.localizedDescription)"
-            showAlert = true
-            print("Error saving file: \(error)")
-        }
+                do {
+                    textContent = try String(contentsOf: file, encoding: .utf8)
+                    currentFile = file
+                }
+                catch {
+                    print("\(error.localizedDescription)")
+                }
 
-        DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
-            saveStatusMessage = ""
-            saveStatusColor = .gray
+                // release access
+                file.stopAccessingSecurityScopedResource()
+            }
+        case .failure(let error):
+            print(error)
         }
     }
 }
-
-struct FileEditorView_Previews: PreviewProvider {
-    static var previews: some View {
-        FileEditorView()
-    }
-}
-
