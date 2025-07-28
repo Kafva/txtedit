@@ -3,7 +3,7 @@ import System
 
 struct StartView: View {
     @EnvironmentObject var appState: AppState
-    @AppStorage("latestFile") private var latestFile: URL?
+    @AppStorage("latestAppFile") private var latestAppFile: URL?
 
     @State private var newFilename: String = ""
     @State private var fileImporterIsPresented = false
@@ -11,10 +11,10 @@ struct StartView: View {
 
     var body: some View {
         VStack(alignment: .center, spacing: 30) {
-            if let latestFile {
+            if let latestAppFile {
                 ButtonView(
-                    action: { handleImport(url: latestFile) },
-                    text: "Continue…  (\(latestFile.lastPathComponent))",
+                    action: { handleImport(url: latestAppFile) },
+                    text: "Continue…  (\(latestAppFile.lastPathComponent))",
                     systemImage: "document.badge.clock"
                 )
             }
@@ -26,7 +26,7 @@ struct StartView: View {
             )
             .fileImporter(
                 isPresented: $fileImporterIsPresented,
-                allowedContentTypes: [.plainText, .text],
+                allowedContentTypes: Const.allowedContentTypes,
                 allowsMultipleSelection: false,
                 onCompletion: { result in
                     switch result {
@@ -74,7 +74,7 @@ struct StartView: View {
             return
         }
 
-        latestFile = newUrl
+        latestAppFile = newUrl
         appState.currentUrl = newUrl
         appState.editorContent = ""
         // Automatically enable editing for new files
@@ -93,7 +93,10 @@ struct StartView: View {
             appState.editorContent = try String(
                 contentsOf: url, encoding: .utf8)
             appState.currentUrl = url
-            latestFile = url
+            // Do not update the `latestAppFile`, we get a security exception
+            // if we try to access it again later, this API looks like what we
+            // need, (macOS only)
+            // https://developer.apple.com/documentation/foundation/nsurl/bookmarkcreationoptions/withsecurityscope
             LOG.debug(
                 "Imported \(appState.editorContent.count) bytes from '\(url.path())'"
             )
