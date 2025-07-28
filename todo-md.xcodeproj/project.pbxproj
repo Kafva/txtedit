@@ -11,6 +11,7 @@
 		16CD541A3324242A922F2455 /* EditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE2DCB184795BF9CEBAF4C7E /* EditorView.swift */; };
 		2988D6A21DC7B10026496498 /* app.swift in Sources */ = {isa = PBXBuildFile; fileRef = F81991C462598F33654ED205 /* app.swift */; };
 		434D1DD38CADC3E61912424D /* AppView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14B0D7816D4AEE89A0525572 /* AppView.swift */; };
+		827B559C573F0D1CD8BBA7C9 /* Log.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C31662A7A1D37DF228E2C2C /* Log.swift */; };
 		828B36FE2975C60DA854F68A /* ErrorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F51593C64A25F5759BA8E42 /* ErrorView.swift */; };
 		B46FC87EE21F42E889A9D9BD /* FileManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F572B76F8912517FE38EDEE2 /* FileManager.swift */; };
 		CE05B1492E00537022B32582 /* AppState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16DA6F2A86FC3F35990B6FD2 /* AppState.swift */; };
@@ -22,6 +23,7 @@
 		0F51593C64A25F5759BA8E42 /* ErrorView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ErrorView.swift; path = Views/ErrorView.swift; sourceTree = "<group>"; };
 		14B0D7816D4AEE89A0525572 /* AppView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = AppView.swift; path = Views/AppView.swift; sourceTree = "<group>"; };
 		16DA6F2A86FC3F35990B6FD2 /* AppState.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AppState.swift; sourceTree = "<group>"; };
+		2C31662A7A1D37DF228E2C2C /* Log.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = Log.swift; sourceTree = "<group>"; };
 		A69A9B8B4B14F17F31303DF5 /* StartView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = StartView.swift; path = Views/StartView.swift; sourceTree = "<group>"; };
 		B3E0A00F38E24EA41260626E /* Const.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = Const.swift; sourceTree = "<group>"; };
 		DDC6F8C62E3761E000549F7E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -72,6 +74,7 @@
 				EE2DCB184795BF9CEBAF4C7E /* EditorView.swift */,
 				0F51593C64A25F5759BA8E42 /* ErrorView.swift */,
 				A69A9B8B4B14F17F31303DF5 /* StartView.swift */,
+				2C31662A7A1D37DF228E2C2C /* Log.swift */,
 			);
 			path = Sources;
 			sourceTree = "<group>";
@@ -155,6 +158,7 @@
 				16CD541A3324242A922F2455 /* EditorView.swift in Sources */,
 				828B36FE2975C60DA854F68A /* ErrorView.swift in Sources */,
 				0481DAE590E4D9C25B0F1280 /* StartView.swift in Sources */,
+				827B559C573F0D1CD8BBA7C9 /* Log.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -4,26 +4,34 @@ import UIKit
 struct EditorView: View {
     @EnvironmentObject var appState: AppState
 
-    @State private var fileImporterIsPresented = false;
-    @State private var newFileIsPresented = false;
-
     var body: some View {
         VStack(alignment: .center) {
-            topBarView
-            contentView.disabled(appState.editDisabled)
+            topHeader.padding(.top, 20)
+            TextEditor(text: $appState.editorContent)
+                .multilineTextAlignment(.leading)
+                .font(Const.editorFont)
+                .autocorrectionDisabled()
+                .autocapitalization(.none)
+                .padding([.leading, .trailing], 25)
+                .disabled(appState.editDisabled)
         }
     }
 
-    var topBarView: some View {
+    private var topHeader: some View {
         HStack(spacing: 10) {
             Button(action: { appState.currentUrl = nil }) {
-                Image(systemName: "chevron.left").foregroundColor(.accentColor)
+                Image(systemName: "chevron.left")
+                    .bold()
+                    .font(Const.saveButtonFont)
+                    .foregroundColor(.accentColor)
             }
 
             if let currentUrl = appState.currentUrl {
                 Text(currentUrl.lastPathComponent)
-                    .font(.title2)
                     .underline()
+                    .padding([.leading, .trailing], 8)
+                    .lineLimit(1)
+                    .font(.title)
             }
 
             Spacer()
@@ -31,33 +39,21 @@ struct EditorView: View {
             Group {
                 if appState.editDisabled {
                     Button(action: { appState.editDisabled = false }) {
-                        Label("Edit", systemImage: "pencil.line")
+                        Label("Edit", systemImage: "pencil.line").bold()
                     }
                 }
                 else {
                     Button(action: handleSave) {
-                        Text(":w").font(Const.saveButtonFont)
+                        Text(":w").font(Const.saveButtonFont).bold()
                     }
                 }
             }
-
         }
-        .padding(.top, 20)
-    }
-
-    var contentView: some View {
-        VStack(alignment: .center, spacing: 30) {
-            TextEditor(text: $appState.editorContent)
-                .multilineTextAlignment(.leading)
-                .font(Const.editorFont)
-                .autocorrectionDisabled()
-                .autocapitalization(.none)
-        }
-        .padding([.leading, .trailing], 25)
     }
 
     private func handleSave() {
         guard let currentUrl = appState.currentUrl else {
+            appState.currentError = "No current URL to save"
             return
         }
         do {
@@ -71,6 +67,7 @@ struct EditorView: View {
                 encoding: .utf8
             )
             appState.editDisabled = true
+            LOG.debug("Wrote \(appState.editorContent.count) bytes to '\(currentUrl.path())'")
         } catch {
             appState.currentError = "Error saving file: \(error.localizedDescription)"
         }
