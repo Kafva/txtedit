@@ -5,8 +5,8 @@ struct EditorView: View {
     @EnvironmentObject var appState: AppState
 
     var body: some View {
-        VStack(alignment: .center) {
-            topHeader.padding(.top, 20)
+        VStack(alignment: .leading) {
+            topHeader.padding([.top, .bottom], 20)
             Group {
                 if appState.editDisabled {
                     ScrollView {
@@ -29,8 +29,7 @@ struct EditorView: View {
         HStack(spacing: 10) {
             Button(action: { appState.currentUrl = nil }) {
                 Image(systemName: "chevron.left")
-                    .bold()
-                    .font(Const.saveButtonFont)
+                    .font(Const.editorButtonFont)
                     .foregroundColor(.accentColor)
             }
 
@@ -38,7 +37,7 @@ struct EditorView: View {
                 Text(currentUrl.lastPathComponent)
                     .padding([.leading, .trailing], 8)
                     .lineLimit(1)
-                    .font(.title)
+                    .font(Const.editorTitleFont)
             }
 
             Spacer()
@@ -46,15 +45,16 @@ struct EditorView: View {
             Group {
                 if appState.editDisabled {
                     Button(action: { appState.editDisabled = false }) {
-                        Label("Edit", systemImage: "pencil.line").bold()
+                        Label("Edit", systemImage: "pencil.line")
                     }
                 }
                 else {
                     Button(action: handleSave) {
-                        Text(":w").font(Const.saveButtonFont).bold()
+                        Text(":w")
                     }
                 }
             }
+            .font(Const.editorButtonFont)
         }
     }
 

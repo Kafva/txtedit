@@ -27,7 +27,7 @@
 		A69A9B8B4B14F17F31303DF5 /* StartView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = StartView.swift; path = Views/StartView.swift; sourceTree = "<group>"; };
 		B3E0A00F38E24EA41260626E /* Const.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = Const.swift; sourceTree = "<group>"; };
 		DDC6F8C62E3761E000549F7E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		DDCB891F2E3759D80077C8E4 /* todo-md.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "todo-md.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		DDCB891F2E3759D80077C8E4 /* txtedit.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "txtedit.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		DDCF5C362E375ACF00592FA6 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		EE2DCB184795BF9CEBAF4C7E /* EditorView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = EditorView.swift; path = Views/EditorView.swift; sourceTree = "<group>"; };
 		F572B76F8912517FE38EDEE2 /* FileManager.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = FileManager.swift; path = Extensions/FileManager.swift; sourceTree = "<group>"; };
@@ -57,7 +57,7 @@
 		DDCB89202E3759D80077C8E4 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				DDCB891F2E3759D80077C8E4 /* todo-md.app */,
+				DDCB891F2E3759D80077C8E4 /* txtedit.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -82,9 +82,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		DDCB891E2E3759D80077C8E4 /* todo-md */ = {
+		DDCB891E2E3759D80077C8E4 /* txtedit */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = DDCB892A2E3759D90077C8E4 /* Build configuration list for PBXNativeTarget "todo-md" */;
+			buildConfigurationList = DDCB892A2E3759D90077C8E4 /* Build configuration list for PBXNativeTarget "txtedit" */;
 			buildPhases = (
 				DDCB891B2E3759D80077C8E4 /* Sources */,
 				DDCB891C2E3759D80077C8E4 /* Frameworks */,
@@ -94,9 +94,9 @@
 			);
 			dependencies = (
 			);
-			name = "todo-md";
-			productName = "todo-md";
-			productReference = DDCB891F2E3759D80077C8E4 /* todo-md.app */;
+			name = "txtedit";
+			productName = "txtedit";
+			productReference = DDCB891F2E3759D80077C8E4 /* txtedit.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -115,7 +115,7 @@
 					};
 				};
 			};
-			buildConfigurationList = DDCB891A2E3759D80077C8E4 /* Build configuration list for PBXProject "todo-md" */;
+			buildConfigurationList = DDCB891A2E3759D80077C8E4 /* Build configuration list for PBXProject "txtedit" */;
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
@@ -129,7 +129,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				DDCB891E2E3759D80077C8E4 /* todo-md */,
+				DDCB891E2E3759D80077C8E4 /* txtedit */,
 			);
 		};
 /* End PBXProject section */
@@ -308,7 +308,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "one.kafva.todo-md";
+				PRODUCT_BUNDLE_IDENTIFIER = "one.kafva.txtedit";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
@@ -343,7 +343,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "one.kafva.todo-md";
+				PRODUCT_BUNDLE_IDENTIFIER = "one.kafva.txtedit";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
@@ -358,7 +358,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		DDCB891A2E3759D80077C8E4 /* Build configuration list for PBXProject "todo-md" */ = {
+		DDCB891A2E3759D80077C8E4 /* Build configuration list for PBXProject "txtedit" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				DDCB89282E3759D90077C8E4 /* Debug */,
@@ -367,7 +367,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		DDCB892A2E3759D90077C8E4 /* Build configuration list for PBXNativeTarget "todo-md" */ = {
+		DDCB892A2E3759D90077C8E4 /* Build configuration list for PBXNativeTarget "txtedit" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				DDCB892B2E3759D90077C8E4 /* Debug */,

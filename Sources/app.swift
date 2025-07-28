@@ -1,7 +1,7 @@
 import SwiftUI
 
 @main
-struct TodoMdApp: App {
+struct TxtEditApp: App {
     @StateObject private var appState: AppState = AppState()
 
     var body: some Scene {

@@ -38,7 +38,8 @@ struct StartView: View {
                         }
 
                         if !url.startAccessingSecurityScopedResource() {
-                            appState.currentError = "Could not gain access to: '\(url.path())'"
+                            appState.currentError =
+                                "Could not gain access to: '\(url.path())'"
                             return
                         }
 
@@ -57,7 +58,7 @@ struct StartView: View {
                 text: "New…",
                 systemImage: "document.badge.plus"
             )
-            .alert("New filename", isPresented: $newFileIsPresented) {
+            .alert("New file…", isPresented: $newFileIsPresented) {
                 TextField(newFilename, text: $newFilename)
                     .autocapitalization(.none)
                     .autocorrectionDisabled()
@@ -96,7 +97,8 @@ struct StartView: View {
 
     private func handleImport(url: URL) {
         do {
-            appState.editorContent = try String(contentsOf: url, encoding: .utf8)
+            appState.editorContent = try String(
+                contentsOf: url, encoding: .utf8)
             appState.currentUrl = url
             // Open existing files read-only
             appState.editDisabled = true
