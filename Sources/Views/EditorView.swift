@@ -58,7 +58,8 @@ struct EditorView: View {
         }
         do {
             if !currentUrl.startAccessingSecurityScopedResource() {
-                appState.currentError = "Could not gain access to: '\(currentUrl.path())'"
+                appState.currentError =
+                    "Could not gain access to: '\(currentUrl.path())'"
                 return
             }
             try appState.editorContent.write(
@@ -67,9 +68,13 @@ struct EditorView: View {
                 encoding: .utf8
             )
             appState.editDisabled = true
-            LOG.debug("Wrote \(appState.editorContent.count) bytes to '\(currentUrl.path())'")
-        } catch {
-            appState.currentError = "Error saving file: \(error.localizedDescription)"
+            LOG.debug(
+                "Wrote \(appState.editorContent.count) bytes to '\(currentUrl.path())'"
+            )
+        }
+        catch {
+            appState.currentError =
+                "Error saving file: \(error.localizedDescription)"
         }
         currentUrl.stopAccessingSecurityScopedResource()
     }

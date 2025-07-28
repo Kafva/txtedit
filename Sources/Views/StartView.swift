@@ -6,8 +6,8 @@ struct StartView: View {
     @AppStorage("latestFile") private var latestFile: URL?
 
     @State private var newFilename: String = ""
-    @State private var fileImporterIsPresented = false;
-    @State private var newFileIsPresented = false;
+    @State private var fileImporterIsPresented = false
+    @State private var newFileIsPresented = false
 
     var body: some View {
         VStack(alignment: .center, spacing: 30) {
@@ -66,7 +66,8 @@ struct StartView: View {
     }
 
     private func handleNewFileSubmit() {
-        let newUrl = FileManager.default.appDataDirectory.appending(path: newFilename)
+        let newUrl = FileManager.default.appDataDirectory.appending(
+            path: newFilename)
 
         if FileManager.default.access(newUrl) {
             appState.currentError = "Path already exists: '\(newUrl.path())'"
@@ -89,7 +90,8 @@ struct StartView: View {
         }
 
         do {
-            appState.editorContent = try String(contentsOf: url, encoding: .utf8)
+            appState.editorContent = try String(
+                contentsOf: url, encoding: .utf8)
             appState.currentUrl = url
             latestFile = url
             LOG.debug(

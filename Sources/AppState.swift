@@ -6,4 +6,3 @@ class AppState: ObservableObject {
     @Published var editorContent: String = ""
     @Published var editDisabled = true
 }
-
