@@ -105,7 +105,7 @@ struct StartView: View {
 
             // Do not update the `latestAppFile`, we get a security exception
             // if we try to access it again later, this API looks like what we
-            // need, (macOS only)
+            // need (macOS only)
             // https://developer.apple.com/documentation/foundation/nsurl/bookmarkcreationoptions/withsecurityscope
             LOG.debug(
                 "Imported \(appState.editorContent.count) bytes from '\(url.path())'"
