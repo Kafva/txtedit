@@ -27,6 +27,5 @@ struct ErrorView: View {
             }
             .padding(.top, 30)
         }
-        .padding([.leading, .trailing], 25)
     }
 }

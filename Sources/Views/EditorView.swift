@@ -4,6 +4,8 @@ import UIKit
 struct EditorView: View {
     @EnvironmentObject var appState: AppState
 
+    @State private var alertIsPresented = false
+
     var body: some View {
         VStack(alignment: .leading) {
             topHeader.padding([.top, .bottom], 20)
@@ -27,10 +29,22 @@ struct EditorView: View {
 
     private var topHeader: some View {
         HStack(spacing: 10) {
-            Button(action: { appState.currentUrl = nil }) {
+            Button(action: {
+                if appState.savedEditorContent == appState.editorContent {
+                    handleBack()
+                }
+                else {
+                    alertIsPresented = true
+                }
+            }) {
                 Image(systemName: "chevron.left")
                     .font(Const.editorButtonFont)
                     .foregroundColor(.accentColor)
+            }
+            .alert("Discard unsaved changes?", isPresented: $alertIsPresented) {
+                Button("Yes", role: .destructive) {
+                    handleBack()
+                }
             }
 
             if let currentUrl = appState.currentUrl {
@@ -45,10 +59,10 @@ struct EditorView: View {
             Group {
                 if appState.editDisabled {
                     Button(action: { appState.editDisabled = false }) {
-                        Label("Edit", systemImage: "pencil.line")
+                        Image(systemName: "pencil.line")
                     }
                 }
-                else {
+                else if appState.savedEditorContent != appState.editorContent {
                     Button(action: handleSave) {
                         Text(":w")
                     }
@@ -56,6 +70,13 @@ struct EditorView: View {
             }
             .font(Const.editorButtonFont)
         }
+        .padding([.leading, .trailing], 10)
+    }
+
+    private func handleBack() {
+        appState.currentUrl = nil
+        appState.savedEditorContent = ""
+        appState.editorContent = ""
     }
 
     private func handleSave() {
@@ -70,6 +91,7 @@ struct EditorView: View {
                 atomically: true,
                 encoding: .utf8
             )
+            appState.savedEditorContent = appState.editorContent
             appState.editDisabled = true
             LOG.debug(
                 "Wrote \(appState.editorContent.count) bytes to '\(currentUrl.path())'"

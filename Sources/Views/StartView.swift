@@ -88,6 +88,7 @@ struct StartView: View {
 
         latestAppFile = newUrl
         appState.currentUrl = newUrl
+        appState.savedEditorContent = ""
         appState.editorContent = ""
         // Automatically enable editing for new files
         appState.editDisabled = false
@@ -97,11 +98,12 @@ struct StartView: View {
 
     private func handleImport(url: URL) {
         do {
-            appState.editorContent = try String(
+            appState.savedEditorContent = try String(
                 contentsOf: url, encoding: .utf8)
+            appState.editorContent = appState.savedEditorContent
             appState.currentUrl = url
-            // Open existing files read-only
-            appState.editDisabled = true
+            // Open existing files (except most recent) read-only
+            appState.editDisabled = url != latestAppFile
 
             // Do not update the `latestAppFile`, we get a security exception
             // if we try to access it again later, this API looks like what we

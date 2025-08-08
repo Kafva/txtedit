@@ -8,17 +8,16 @@ struct AppView: View {
             Spacer()
 
             if appState.currentError != nil {
-                ErrorView()
+                ErrorView().padding([.leading, .trailing], 25)
             }
             else if appState.currentUrl != nil {
-                EditorView()
+                EditorView().padding([.leading, .trailing], 5)
             }
             else {
-                StartView()
+                StartView().padding([.leading, .trailing], 25)
             }
 
             Spacer()
         }
-        .padding([.leading, .trailing], 25)
     }
 }
